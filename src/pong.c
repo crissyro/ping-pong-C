@@ -5,12 +5,8 @@
 #define RACKET_SIZE 3
 #define WIN_SCORE 21
 
-void clear_screen() {
-    printf("\033[H\033[J"); // ANSI escape code for cleaning screen
-}
-
 void draw(int xBall, int yBall, int yRacket1, int yRacket2, int score1, int score2) {
-    clear_screen();
+    printf("\033[H\033[J"); // ANSI escape code for cleaning screen
 
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
@@ -36,7 +32,6 @@ void draw(int xBall, int yBall, int yRacket1, int yRacket2, int score1, int scor
 }
 
 void game() {
-
     // placement ball
     int xBall = WIDTH / 2;
     int yBall = HEIGHT / 2;
@@ -51,45 +46,34 @@ void game() {
     int score2 = 0;
 
     while (score1 < WIN_SCORE && score2 < WIN_SCORE) {
+
         draw(xBall, yBall, yRacket1, yRacket2, score1, score2);
 
         char inputSymbol;
-
         inputSymbol = getchar();
 
         while (getchar() != '\n'); 
 
-        if (inputSymbol == ' ') {
-            continue;
-        }
+        if (inputSymbol == ' ') continue;
+    
+        if (inputSymbol == 'q' || inputSymbol == 'Q') break;
 
-        if (inputSymbol == 'q' || inputSymbol == 'Q') {
-            break;
-        }
+        if ((inputSymbol == 'a' || inputSymbol == 'A') && yRacket1 > 1) yRacket1--;
 
-        if ((inputSymbol == 'a' || inputSymbol == 'A') && yRacket1 > 1) {
-            yRacket1--;
-        } else if ((inputSymbol == 'z' || inputSymbol == 'Z') && yRacket1 < HEIGHT - RACKET_SIZE - 1) {
-            yRacket1++;
-        } else if ((inputSymbol == 'k' || inputSymbol == 'K') && yRacket2 > 1) {
-            yRacket2--;
-        } else if ((inputSymbol == 'm' || inputSymbol == 'M') && yRacket2 < HEIGHT - RACKET_SIZE - 1) {
-            yRacket2++;
-        }
+        else if ((inputSymbol == 'z' || inputSymbol == 'Z') && yRacket1 < HEIGHT - RACKET_SIZE - 1) yRacket1++;
 
+        else if ((inputSymbol == 'k' || inputSymbol == 'K') && yRacket2 > 1) yRacket2--;
+
+        else if ((inputSymbol == 'm' || inputSymbol == 'M') && yRacket2 < HEIGHT - RACKET_SIZE - 1) yRacket2++;
+        
         xBall += dxBall;
         yBall += dyBall;
 
-        if (yBall == 1  || yBall == HEIGHT - 2) {
-            dyBall = -dyBall;
-        }
-
-        if (xBall == 3 && yBall >= yRacket1 && yBall < yRacket1 + RACKET_SIZE) {
-            dxBall = -dxBall;
-        }
-        if (xBall == WIDTH - 4 && yBall >= yRacket2 && yBall < yRacket2 + RACKET_SIZE) {
-            dxBall = -dxBall;
-        }
+        if (yBall == 1  || yBall == HEIGHT - 2) dyBall = -dyBall;
+        
+        if (xBall == 3 && yBall >= yRacket1 && yBall < yRacket1 + RACKET_SIZE) dxBall = -dxBall;
+        
+        if (xBall == WIDTH - 4 && yBall >= yRacket2 && yBall < yRacket2 + RACKET_SIZE) dxBall = -dxBall;
 
         if (xBall == 0) {
             score2++;
@@ -106,13 +90,11 @@ void game() {
         }
     }
 
-    if (score1 >= WIN_SCORE) {
-        printf("Player 1 is winner ☺️!!!\n");
-    } else if (score2 >= WIN_SCORE){
-        printf("Player 2 is winner ☺️!!!\n");
-    } else {
-        printf("Stop game with Q\n");
-    }
+    if (score1 >= WIN_SCORE) printf("Player 1 is winner ☺️!!!\n");
+
+    else if (score2 >= WIN_SCORE) printf("Player 2 is winner ☺️!!!\n");
+
+    else printf("Stop game with Q\n");
 }
 
 int main() {
