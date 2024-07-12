@@ -49,9 +49,13 @@ void game() {
         int inputSymbol = getch();
         if (inputSymbol != ERR) {
             if (inputSymbol == 'q' || inputSymbol == 'Q') break;
+
             if ((inputSymbol == 'a' || inputSymbol == 'A') && yRacket1 > 1) yRacket1--;
+
             else if ((inputSymbol == 'z' || inputSymbol == 'Z') && yRacket1 < HEIGHT - RACKET_SIZE - 1) yRacket1++;
+
             else if ((inputSymbol == 'k' || inputSymbol == 'K') && yRacket2 > 1) yRacket2--;
+
             else if ((inputSymbol == 'm' || inputSymbol == 'M') && yRacket2 < HEIGHT - RACKET_SIZE - 1) yRacket2++;
         }
 
@@ -59,7 +63,9 @@ void game() {
         yBall += dyBall;
 
         if (yBall == 1 || yBall == HEIGHT - 2) dyBall = -dyBall;
+
         if (xBall == 3 && yBall >= yRacket1 && yBall < yRacket1 + RACKET_SIZE) dxBall = -dxBall;
+        
         if (xBall == WIDTH - 4 && yBall >= yRacket2 && yBall < yRacket2 + RACKET_SIZE) dxBall = -dxBall;
 
         if (xBall == 0) {
@@ -78,8 +84,11 @@ void game() {
     }
 
     clear();
+
     if (score1 >= WIN_SCORE) mvprintw(HEIGHT / 2, WIDTH / 2 - 10, "Player 1 is the winner ☺️!!!");
+
     else if (score2 >= WIN_SCORE) mvprintw(HEIGHT / 2, WIDTH / 2 - 10, "Player 2 is the winner ☺️!!!");
+
     else mvprintw(HEIGHT / 2, WIDTH / 2 - 10, "Game stopped with 'q'");
 
     refresh();
